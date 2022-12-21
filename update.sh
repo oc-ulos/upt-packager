@@ -31,7 +31,7 @@ cmd () {
 	/opt/ulos2/ulos-runner /opt/ulos2/liblua /opt/ulos2/upt/src/bin/$1.lua "$@"
 }
 
-rm -rf /opt/ulos2/repos
+rm -rvf /opt/ulos2/repos
 
 package () {
 	pkgname=$1
@@ -53,6 +53,7 @@ package () {
 	mkdir -p /opt/ulos2/repos/$repo
 	touch /opt/ulos2/repos/$repo/packages.upl
 
+	rm -vf *.mtar
 	cd /opt/ulos2/packages/$pkgname
 	cmd uptb | tail -n 1 >> /opt/ulos2/repos/$repo/packages.upl
 	mkdir -p /opt/ulos2/repos/$repo/
