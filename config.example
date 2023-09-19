@@ -5,13 +5,13 @@
 base=https://github.com/org-or-user
 
 # package build specification:
-# repo=REPO_NAME package PKG_NAME GIT_REPO_URL
-repo=example package example1 $base/example1
+# repo=REPO_NAME package PKG_NAME GIT_REPO_URL BRANCH
+repo=example package example1 $base/example1 main
 # optionally takes another argument: the path to a script to run before invoking `uptb`.
-repo=core package cynosure-2 $base/oc-cynosure-2 /opt/ulos2/hacks/cynosure
+repo=core package cynosure-2 $base/oc-cynosure-2 dev /opt/packages/hacks/cynosure
 
 # for remote package servers
 # repo=REPO_NAME push SERVER_PATH
-repo=core push server:/path/to/www/ulos/v2/
+repo=core push server:/path/to/www/packages/
 # for package servers on the same machine:
-repo=example push /path/to/www/ulos/v2/
+repo=example push /path/to/www/packages/
