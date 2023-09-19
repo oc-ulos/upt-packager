@@ -24,7 +24,7 @@ else
 	git pull
 fi
 
-curl https://raw.githubusercontent.com/oc-ulos/ulos-2/primary/tools/ulos-runner > /opt/ulos2/ulos-runner
+curl https://raw.githubusercontent.com/oc-ulos/ulos-2/dev/tools/ulos-runner > /opt/ulos2/ulos-runner
 chmod +x /opt/ulos2/ulos-runner
 
 cmd () {
@@ -36,25 +36,28 @@ rm -rvf /opt/ulos2/repos
 package () {
 	pkgname=$1
 	giturl=$2
-	prebuild="$3"
+  branch=$3
+	prebuild="$4"
 
-	if [ -d /opt/ulos2/packages/$pkgname ]; then
-		cd /opt/ulos2/packages/$pkgname
+	if [ -d /opt/ulos2/packages/$pkgname-$branch ]; then
+		cd /opt/ulos2/packages/$pkgname-$branch
+    git checkout $branch
 		git pull
 	else
-		git clone $giturl /opt/ulos2/packages/$pkgname
+		git clone $giturl /opt/ulos2/packages/$pkgname-$branch
 	fi
 
-	cd /opt/ulos2/packages/$pkgname
+	cd /opt/ulos2/packages/$pkgname-$branch
+  git checkout $branch
 	if [ "$prebuild" ]; then
-		$prebuild
+		$prebuild $pkgname $branch
 	fi
 
 	mkdir -p /opt/ulos2/repos/$repo
 	touch /opt/ulos2/repos/$repo/packages.upl
 
 	rm -vf *.mtar
-	cd /opt/ulos2/packages/$pkgname
+	cd /opt/ulos2/packages/$pkgname-$branch
 	cmd uptb | tail -n 1 >> /opt/ulos2/repos/$repo/packages.upl
 	mkdir -p /opt/ulos2/repos/$repo/
 	cp *.mtar /opt/ulos2/repos/$repo/
