@@ -1,0 +1,31 @@
+# See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+name: Build and push
+description: Build and push ULOS 2 package to the ULOS package repository
+author: spraints and ocawesome101
+
+inputs:
+  repo:
+    description: 'Package repository (e.g. core)'
+    required: true
+  pkgname:
+    description: 'Name of package (usually the same as the repository name, e.g. coreutils)'
+    required: true
+  prebuild:
+    description: 'Path to a script to run before invoking uptb'
+    required: false
+  push_url:
+    description: 'SSH destination for this repository (should include "repo" path component at the end)'
+    required: true
+  push_identity:
+    description: 'SSH identity (private key) to use when pushing the package'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup upt
+      run: ${{ github.action_path }}/action-steps/setup.sh
+    - name: Build package
+      run: ${{ github.action_path }}/action-steps/build.sh
+    - name: Push package
+      run: ${{ github.action_path }}/action-steps/push.sh
